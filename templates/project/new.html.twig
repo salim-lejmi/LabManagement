@@ -1,0 +1,11 @@
+{% extends 'navbar.html.twig' %}
+{% block body %}
+    <title>New Project</title>
+
+    <h1>Create new Project</h1>
+
+    {{ include('project/_form.html.twig') }}
+
+    <a href="{{ path('app_project') }}">back to list</a>
+    {% include 'footer.html.twig' %}
+{% endblock %}

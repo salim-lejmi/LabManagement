@@ -1,0 +1,14 @@
+{% extends 'navbar.html.twig' %}
+{% block body %}
+<!DOCTYPE html>
+
+<title>Edit Project</title>
+    <h1>Edit Project</h1>
+
+    {{ include('project/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_project') }}">back to list</a>
+
+    {{ include('project/_delete_form.html.twig') }}
+    {% include 'footer.html.twig' %}
+{% endblock %}

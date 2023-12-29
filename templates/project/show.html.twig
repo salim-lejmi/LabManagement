@@ -1,0 +1,51 @@
+{% extends 'navbar.html.twig' %}
+{% block body %}
+<!DOCTYPE html>
+
+<title>Project</title>
+    <h1>Project</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ project.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ project.title }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ project.description }}</td>
+            </tr>
+            <tr>
+                <th>StarDate</th>
+                <td>{{ project.startDate ? project.startDate|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>EndDate</th>
+                <td>{{ project.endDate ? project.endDate|date('Y-m-d') : '' }}</td>
+            </tr>
+
+            <tr>
+                <th>Chercheurs</th>
+                <td>
+                    <ul>
+                        {% for researcher in project.researchers %}
+                            <li>{{ researcher.name }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_project') }}">back to list</a>
+
+    <a href="{{ path('app_project_edit', {'id': project.id}) }}">edit</a>
+
+    {{ include('project/_delete_form.html.twig') }}
+
+    {% include 'footer.html.twig' %}
+{% endblock %}

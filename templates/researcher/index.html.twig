@@ -1,0 +1,41 @@
+{% extends 'navbar.html.twig' %}
+
+{% block title %}List of Researchers{% endblock %}
+
+{% block body %}
+ <h1>List of Researchers</h1>
+ {% if app.user and 'admin' in app.user.getRoles() %}
+ <table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Password</th>
+            <th>Projects</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for researcher in researchers %}
+            <tr>
+              <td>{{ researcher.id }}</td>
+              <td>{{ researcher.name }}</td>
+              <td>{{ researcher.email }}</td>
+              <td>{{ researcher.password }}</td>
+              <td>
+                 <ul>
+                     {% for project in researcher.projects %}
+                         <li>{{ project.name }}</li>
+                     {% endfor %}
+                 </ul>
+              </td>
+            </tr>
+        {% else %}
+            <tr>
+              <td colspan="2">No researchers found.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+ </table>
+ {% endif %}
+{% endblock %}
