@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 use App\Entity\Publication;
+use App\Entity\Project;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,10 +24,12 @@ class ProfileController extends AbstractController
     {
         $user = $this->getUser();
         $publications = $this->doctrine->getRepository(Publication::class)->findBy(['author' => $user]);
+        $projects = $user->getProjects();
     
         return $this->render('profile/profile.html.twig', [
             'user' => $user,
             'publications' => $publications,
+            'projects' => $projects,
         ]);
     }
     #[Route('/profile/delete', name: 'user_delete')]

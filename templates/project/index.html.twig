@@ -5,6 +5,7 @@
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Username</th>
                 <th>Title</th>
                 <th>Description</th>
                 <th>StarDate</th>
@@ -16,6 +17,7 @@
         {% for project in projects %}
             <tr>
                 <td>{{ project.id }}</td>
+                <td>{{ project.username }}</td>
                 <td>{{ project.title }}</td>
                 <td>{{ project.description }}</td>
                 <td>{{ project.startDate ? project.startDate|date('Y-m-d') : '' }}</td>
@@ -32,8 +34,8 @@
         {% endfor %}
         </tbody>
     </table>
-
+    {% if app.user %}
     <a href="{{ path('app_project_new') }}">Create new</a>
-
+    {% endif %}
     {% include 'footer.html.twig' %}
 {% endblock %}

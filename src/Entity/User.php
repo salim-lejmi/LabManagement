@@ -114,9 +114,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
     private $publications;
 
+    #[ORM\ManyToMany(targetEntity: Project::class, inversedBy: 'users')]
+    private Collection $projects;
+    
     public function __construct()
     {
         $this->publications = new ArrayCollection();
+        $this->projects = new ArrayCollection();
+        
+
     }
 
     /**
@@ -130,6 +136,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->publications;
     }
 
+
     public function getRole(): ?string
     {
         return $this->role;
@@ -138,6 +145,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRole(string $role): static
     {
         $this->role = $role;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Project>
+     */
+    public function getProjects(): Collection
+    {
+        return $this->projects;
+    }
+
+    public function addProject(Project $project): static
+    {
+        if (!$this->projects->contains($project)) {
+            $this->projects->add($project);
+        }
+
+        return $this;
+    }
+
+    public function removeProject(Project $project): static
+    {
+        $this->projects->removeElement($project);
 
         return $this;
     }

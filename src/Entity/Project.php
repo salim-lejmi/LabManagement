@@ -31,9 +31,16 @@ class Project
     #[ORM\ManyToMany(targetEntity: Researcher::class, inversedBy: 'projects')]
     private Collection $researchers;
 
+    #[ORM\Column(length: 255)]
+    private ?string $username = null;
+
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'projects')]
+    private Collection $users;
+
     public function __construct()
     {
         $this->researchers = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -109,6 +116,45 @@ class Project
     public function removeResearcher(Researcher $researcher): static
     {
         $this->researchers->removeElement($researcher);
+
+        return $this;
+    }
+
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    public function setUsername(string $username): static
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): static
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->addProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): static
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeProject($this);
+        }
 
         return $this;
     }
