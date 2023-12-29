@@ -1,27 +1,42 @@
 {% extends 'navbar.html.twig' %}
 
 {% block body %}
-    <h1>Publications</h1>
+<h1>Publications</h1>
 {% if app.user %}
-    <a href="{{ path('new_publication') }}">New Publication</a>
+   <a href="{{ path('new_publication') }}">New Publication</a>
 {% endif %}
-  {% for publication in publications %}
-    <div>
-        <h2>{{ publication.title }}</h2>
-        <p>{{ publication.content }}</p>
-        <p>By <a href="{{ path('user_profile', {id: publication.author.id}) }}">{{ publication.author.nom }}</a></p>
-        {% if app.user == publication.author %}
-            <a href="{{ path('edit_publication', {id: publication.id}) }}">Edit</a>
-            <a href="{{ path('delete_publication', {id: publication.id}) }}">Delete</a>
-            {% if app.user is not null %}
+<table class="table">
+   <thead>
+       <tr>
+           <th>ID</th>
+           <th>Title</th>
+           <th>Content</th>
+           <th>Author</th>
+           <th>Actions</th>
+       </tr>
+   </thead>
+   <tbody>
+   {% for publication in publications %}
+       <tr>
+           <td>{{ publication.id }}</td>
+           <td>{{ publication.title }}</td>
+           <td>{{ publication.content }}</td>
+           <td><a href="{{ path('user_profile', {id: publication.author.id}) }}">{{ publication.author.nom }}</a></td>
+           <td>
+               {% if app.user == publication.author or 'admin' in app.user.getRoles() %}
+                  <a href="{{ path('edit_publication', {id: publication.id}) }}">Edit</a>
+                  <a href="{{ path('delete_publication', {id: publication.id}) }}">Delete</a>
+               {% endif %}
+           </td>
+       </tr>
+   {% else %}
+       <tr>
+           <td colspan="5">No publications found</td>
+       </tr>
+   {% endfor %}
+   </tbody>
+</table>
 
-        {% elseif 'admin' in app.user.getRoles() %}
-            <a href="{{ path('delete_publication', {id: publication.id}) }}">Delete</a>
-        {% endif %}
-        {% endif %}
-
-    </div>
-{% endfor %}
-  {% include 'footer.html.twig' %}
+{% include 'footer.html.twig' %}
 
 {% endblock %}

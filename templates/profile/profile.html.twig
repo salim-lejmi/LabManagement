@@ -15,12 +15,36 @@
         <h2>Informations des projets</h2>
         <!-- Project information will go here -->
 <h2>Publications associées</h2>
-{% for publication in publications %}
-    <h3>{{ publication.title }}</h3>
-    <p>{{ publication.content }}</p>
-{% else %}
-    <p>No publications found.</p>
-{% endfor %}
+<table class="table">
+  <thead>
+      <tr>
+          <th>ID</th>
+          <th>Title</th>
+          <th>Content</th>
+          <th>Actions</th>
+      </tr>
+  </thead>
+  <tbody>
+  {% for publication in publications %}
+      <tr>
+          <td>{{ publication.id }}</td>
+          <td>{{ publication.title }}</td>
+          <td>{{ publication.content }}</td>
+          <td>
+              {% if app.user == publication.author or 'admin' in app.user.getRoles() %}
+                <a href="{{ path('edit_publication', {id: publication.id}) }}">Edit</a>
+                <a href="{{ path('delete_publication', {id: publication.id}) }}">Delete</a>
+              {% endif %}
+          </td>
+      </tr>
+  {% else %}
+      <tr>
+          <td colspan="4">No publications found</td>
+      </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
 {% include 'footer.html.twig' %}
 
 {% endblock %}
